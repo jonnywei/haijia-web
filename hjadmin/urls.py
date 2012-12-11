@@ -9,6 +9,8 @@ urlpatterns = patterns('',
     # url(r'^$', 'hjadmin.views.home', name='home'),
     # url(r'^hjadmin/', include('hjadmin.foo.urls')),
 
+    url(r'^yueche/$', 'yueche.views.index'),
+                       
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
