@@ -8,9 +8,10 @@ class XueYuan(models.Model):
     taobao_ordernum= models.CharField('淘宝订单号',max_length=64)
     phone_num =models.CharField('电话号码',max_length=20,null=True,blank=True)
     name = models.CharField('名字',max_length=20,null=True)
+    address = models.CharField('地址',max_length=512,null=True,blank=True)
     create_date = models.DateTimeField('创建日期',auto_now_add=True)
     update_date = models.DateTimeField('更新日期',auto_now=True)
-    reserve = models.CharField('备注',max_length=512,null=True,blank=True)
+    reserve = models.CharField('备注',max_length=1024,null=True,blank=True)
 
     def __unicode__(self):
         return  u"%s, %s " % (self.name, self.taobao_name)
@@ -42,3 +43,21 @@ class YueChe(models.Model):
 
     def __unicode__(self):
         return  u"%s, %s ,%s " % (self.xue_yuan, self.id_num, self.yc_date)
+
+class CookieImgCode(models.Model):
+    CODE_TYPE_CHOICES =(
+        (u'ImgCode', u'登录验证码'),
+        (u'BookingCode', u'约车验证码'),
+        )
+    vcode = models.CharField('验证码',max_length=4)
+    cookie = models.CharField('Cookie',max_length= 256)
+    code_type = models.CharField('类型', max_length = 64,choices=CODE_TYPE_CHOICES)
+    create_date = models.DateTimeField('创建日期',auto_now_add=True)
+    update_date = models.DateTimeField('更新日期',auto_now=True)
+
+     def __unicode__(self):
+        return  u"%s, %s ,%s " % (self.id, self.vcode, self.code_type)
+
+
+    
+    

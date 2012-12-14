@@ -9,13 +9,15 @@ urlpatterns = patterns('',
     # url(r'^$', 'hjadmin.views.home', name='home'),
     # url(r'^hjadmin/', include('hjadmin.foo.urls')),
 
+
+    url(r'^$', 'yueche.views.index', name='home'),
+
     url(r'^yueche/$', 'yueche.views.index'),
-    url(r'^set/$', 'set.views.index'),
+    
 
-
-    url(r'^a/$', 'a.views.index'),
-    url(r'^a/yueche/$', 'a.views.yueche'),
-                       
+    url(r'^set/',include('set.urls')),
+    url(r'^a/', include('a.urls')),
+                      
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
