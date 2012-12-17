@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^yueche/$', 'yueche.views.index'),
     
 
-    url(r'^settings/',include('settings.urls')),
+    url(r'^set/',include('set.urls')),
     url(r'^a/', include('a.urls')),
                       
     # Uncomment the admin/doc line below to enable admin documentation:

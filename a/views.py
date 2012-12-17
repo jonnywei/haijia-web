@@ -2,6 +2,8 @@
 # Create your views here.
 
 from yueche.models import YueChe
+from settings.models import SystemConfig
+
 from django.http import HttpResponse
 from django.utils import simplejson
 from django.core import serializers
@@ -67,3 +69,10 @@ def update(request,yueche_id):
     
     #return HttpResponse(simplejson.dumps(list(response_data)),"application/json")
 
+#系统配置信息读取
+def config(request):
+    configs = SystemConfig.objects.all()
+    output = "\r\n".join(u'%s=%s' %(p.key, p.value) for p in configs)
+    return HttpResponse(output,content_type="text/plain;charset=utf-8")
+    
+    

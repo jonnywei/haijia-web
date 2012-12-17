@@ -32,6 +32,7 @@ class YueChe(models.Model):
     xue_yuan = models.ForeignKey(XueYuan)
     id_num = models.CharField('身份证号',max_length=18)
     passwd = models.CharField('密码',max_length=18)
+    phone_num =models.CharField('电话号码',max_length=20,null=True,blank=True)
     yc_date = models.DateField('约车时间')
     yc_time = models.CharField('上午下午',max_length=64,choices=AM_PM_CHOICES)
     yc_km = models.CharField('科目几',max_length =18,choices=KM_CHOICES)
@@ -43,21 +44,7 @@ class YueChe(models.Model):
 
     def __unicode__(self):
         return  u"%s, %s ,%s " % (self.xue_yuan, self.id_num, self.yc_date)
-
-class CookieImgCode(models.Model):
-    CODE_TYPE_CHOICES =(
-        (u'ImgCode', u'登录验证码'),
-        (u'BookingCode', u'约车验证码'),
-        )
-    vcode = models.CharField('验证码',max_length=4)
-    cookie = models.CharField('Cookie',max_length= 256)
-    code_type = models.CharField('类型', max_length = 64,choices=CODE_TYPE_CHOICES)
-    create_date = models.DateTimeField('创建日期',auto_now_add=True)
-    update_date = models.DateTimeField('更新日期',auto_now=True)
-
-     def __unicode__(self):
-        return  u"%s, %s ,%s " % (self.id, self.vcode, self.code_type)
-
+    
 
     
     
