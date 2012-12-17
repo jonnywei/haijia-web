@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>验证码</title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+<script type="text/javascript">
+   <!--
+	 function changeImg(){
+	   document.getElementById("VIMG").src ="/settings/{{image_code_type}}/img/?r=" + Math.random();
+ 	}
+    //-->
+</script>
+
+ </head>
+
+ <body>
+  
+<form method="post" action="/settings/{{image_code_type}}/add/">
+     <br/>
+	图片&nbsp;&nbsp;:<img  src="/settings/{{image_code_type}}/img/" title="换一张"  id="VIMG" onclick="changeImg();"><br/>
+	验证码：<input type="text" name="vcode" size='4'><br/>
+	<input type="submit" value="提交">
+</form>
+ </body>
+</html>
+
+
