@@ -28,7 +28,7 @@
 </form>
 </div>
 
-<h2>验证码列表</h2>
+<h1>验证码列表</h1>
 <table border='1'>
 <tr><td>验证码</td><td>cookie</td><td>类型</td><td>创建日期</td></tr>
  {% for ck in all_cookies %}
