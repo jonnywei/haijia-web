@@ -3,6 +3,7 @@
 
 from yueche.models import YueChe
 from settings.models import SystemConfig
+from settings.models import CookieImgCode
 
 from django.http import HttpResponse
 from django.utils import simplejson
@@ -15,7 +16,7 @@ import datetime
 def index(request):
     return HttpResponse("api")
 
-
+#约车信息
 def yueche(request):
 
     sevendaylater = datetime.date.today()+ datetime.timedelta(days=7)
@@ -68,11 +69,34 @@ def update(request,yueche_id):
 
     
     #return HttpResponse(simplejson.dumps(list(response_data)),"application/json")
+        
 
 #系统配置信息读取
 def config(request):
     configs = SystemConfig.objects.all()
     output = "\r\n".join(u'%s=%s' %(p.key, p.value) for p in configs)
     return HttpResponse(output,content_type="text/plain;charset=utf-8")
+
+
+
+def cookie_all(request):
     
+    cc = CookieImgCode.objects.all()
     
+    json_serializer = serializers.get_serializer("json")()
+    
+    data = json_serializer.serialize(cc, ensure_ascii=False)
+
+    return HttpResponse(data,"application/json;charset=utf-8")
+    
+def cookie_add(request):
+    
+    rvcode = request.GET['vcode']
+    rcookie  = request.GET['cookie']
+    rcode_type = request.GET['code_type']
+    
+    cc = CookieImgCode(vcode=rvcode, cookie=rcookie,code_type=rcode_type)
+
+    cc.save()
+    
+    return HttpResponse('ok',content_type="text/plain;charset=utf-8")
