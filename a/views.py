@@ -31,19 +31,21 @@ def yueche(request):
 
 def detail(request,yueche_id):
 
-    p = get_object_or_404(YueChe, pk=yueche_id)
+    #p = get_object_or_404(YueChe, pk=yueche_id)
+    #data = simplejson.dumps(p,  default=lambda o: o.__dict__)
     
-    #json_serializer = serializers.get_serializer("json")()
+    #return HttpResponse(data,"application/json;charset=utf-8")
+
+
+    response_data = YueChe.objects.filter(id__exact=yueche_id)
+
+    json_serializer = serializers.get_serializer("json")()
 
     
-    #data = json_serializer.serialize(list(p), ensure_ascii=False)
+    data = json_serializer.serialize(response_data, ensure_ascii=False)
 
-    data = simplejson.dumps(p,  default=lambda o: o.__dict__)
     
     return HttpResponse(data,"application/json;charset=utf-8")
-
-    
-    #return HttpResponse(simplejson.dumps(list(response_data)),"application/json")
 
 def update(request,yueche_id):
 
@@ -54,12 +56,12 @@ def update(request,yueche_id):
     except:
         pass
     else:
-        if yc_result ==0 :
+        if yc_result == 0 :
             return HttpResponse("ok","text/html")
         else:
             p.yc_result = request.GET['yc_result']
             p.yc_info   = request.GET['yc_info']
-            p.update()
+            p.save()
             return HttpResponse("save","text/html")        
     #json_serializer = serializers.get_serializer("json")()
 
