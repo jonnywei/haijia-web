@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from yueche.models import XueYuan
+from yueche.models import DingDan
 from yueche.models import YueChe
 
 from django.contrib import admin
 from django.utils.timezone import localtime
 
-class XueYuanAdmin (admin.ModelAdmin):
+class DingDanAdmin (admin.ModelAdmin):
 
     list_display = ('name','taobao_name','phone_num','list_create_date')
     search_fields =['name','taobao_ordernum','phone_num']
@@ -27,7 +27,7 @@ class YueCheAdmin(admin.ModelAdmin):
    
     list_yc_date.short_description='约车日期'
     
-admin.site.register(XueYuan, XueYuanAdmin)
+admin.site.register(DingDan, DingDanAdmin)
 admin.site.register(YueChe, YueCheAdmin)
 
 
