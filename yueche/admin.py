@@ -21,11 +21,11 @@ class DingDanAdmin (admin.ModelAdmin):
 class YueCheAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ('xue_yuan', 'id_num', 'passwd','car_type','yc_date', 'yc_time','yc_km')
+            'fields': ('xue_yuan', 'id_num', 'passwd','car_type','yc_date', 'yc_time','yc_km','phone_num')
         }),
         ('可选信息', {
             'classes': ('collapse',),
-            'fields': ('phone_num','white_car','black_car','reserve')
+            'fields': ('white_car','black_car','reserve')
         }),
         ('约车结果', {
             'classes': ['wide', 'extrapretty'],
@@ -51,6 +51,8 @@ class YueCheAdmin(admin.ModelAdmin):
         return '<a href="%s">%s</a>' %( url ,obj.xue_yuan)
     xue_yuan_link.allow_tags = True
     xue_yuan_link.short_description='用户信息'
+    xue_yuan_link.admin_order_field = 'xue_yuan'
+
     
 admin.site.register(DingDan, DingDanAdmin)
 admin.site.register(YueChe, YueCheAdmin)
