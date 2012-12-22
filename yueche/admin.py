@@ -4,6 +4,7 @@ from yueche.models import YueChe
 
 from django.contrib import admin
 from django.utils.timezone import localtime
+from django.core.urlresolvers import reverse
 
 class DingDanAdmin (admin.ModelAdmin):
 
@@ -18,14 +19,38 @@ class DingDanAdmin (admin.ModelAdmin):
 
 
 class YueCheAdmin(admin.ModelAdmin):
-    list_display = ('xue_yuan','id_num','list_yc_date','yc_time','yc_km','yc_result','yc_info')
-    search_fields = ['id_num','yc_result']
+    fieldsets = (
+        (None, {
+            'fields': ('xue_yuan', 'id_num', 'passwd','car_type','yc_date', 'yc_time','yc_km')
+        }),
+        ('可选信息', {
+            'classes': ('collapse',),
+            'fields': ('phone_num','white_car','black_car','reserve')
+        }),
+        ('约车结果', {
+            'classes': ['wide', 'extrapretty'],
+            'fields': ('yc_result','yc_info')
+        }),
+    )
     
+    list_display = ('id','xue_yuan_link','id_num','phone_num','list_yc_date','yc_time','yc_km','yc_result','yc_info')
+    
+    search_fields = ['id_num','xue_yuan__taobao_name','xue_yuan__name','xue_yuan__phone_num']
+    date_hierarchy = 'yc_date'
 
     def list_yc_date(self, obj):
            return localtime(obj.yc_date).strftime('%Y-%m-%d')
    
     list_yc_date.short_description='约车日期'
+    list_yc_date.admin_order_field = 'yc_date'
+
+    #xue_yuan.short_description ='订单信息'
+
+    def xue_yuan_link(self, obj):
+        url = reverse('admin:yueche_dingdan_change', args=(obj.xue_yuan.id,))
+        return '<a href="%s">%s</a>' %( url ,obj.xue_yuan)
+    xue_yuan_link.allow_tags = True
+    xue_yuan_link.short_description='用户信息'
     
 admin.site.register(DingDan, DingDanAdmin)
 admin.site.register(YueChe, YueCheAdmin)
