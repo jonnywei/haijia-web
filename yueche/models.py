@@ -14,7 +14,7 @@ class DingDan(models.Model):
     reserve = models.CharField('备注',max_length=1024,null=True,blank=True)
 
     def __unicode__(self):
-        return  u"%s, %s " % (self.name, self.taobao_name)
+        return  u"%s, %s" % (self.taobao_name,self.taobao_ordernum)
 
 class YueChe(models.Model):
     AM_PM_CHOICES=(
