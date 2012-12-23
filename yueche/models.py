@@ -4,17 +4,22 @@ from django.db import models
 # Create your models here.
 
 class DingDan(models.Model):
+    WANG_DIAN_CHOICES =(
+        (u'w',u'w'),
+        (u'x',u'x')
+        )
     taobao_name = models.CharField('淘宝用户名', max_length=40)
     taobao_ordernum= models.CharField('淘宝订单号',max_length=64)
     phone_num =models.CharField('电话号码',max_length=20,null=True,blank=True)
     name = models.CharField('名字',max_length=20,null=True)
+    wang_dian = models.CharField('网店',max_length=20,null=True,blank=True,choices=WANG_DIAN_CHOICES,default='w')
     address = models.CharField('地址',max_length=512,null=True,blank=True)
     create_date = models.DateTimeField('创建日期',auto_now_add=True)
     update_date = models.DateTimeField('更新日期',auto_now=True)
     reserve = models.CharField('备注',max_length=1024,null=True,blank=True)
 
     def __unicode__(self):
-        return  u"%s...%.5s" % (self.taobao_name,self.taobao_ordernum)
+        return  u"%s@_@%0.5s" % (self.taobao_name,self.taobao_ordernum)
 
 class YueChe(models.Model):
     AM_PM_CHOICES=(

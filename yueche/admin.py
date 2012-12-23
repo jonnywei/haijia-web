@@ -8,13 +8,22 @@ from django.core.urlresolvers import reverse
 
 class DingDanAdmin (admin.ModelAdmin):
 
-    list_display = ('taobao_name','name','taobao_ordernum','phone_num','list_create_date')
+    list_display = ('taobao_name','name','list_taobao_ordernum','phone_num','list_create_date')
     search_fields =['name','taobao_ordernum','phone_num']
 
     def list_create_date(self, obj):
-           return localtime(obj.create_date).strftime('%Y-%m-%d %H:%M')
+        return localtime(obj.create_date).strftime('%Y-%m-%d %H:%M')
     list_create_date.description='创建日期'
     list_create_date.short_description='创建日期'
+    list_create_date.admin_sort_field='create_date'
+
+    def list_taobao_ordernum(self, obj):
+        return u'<a title="淘宝订单详细信息" target="_blank" href="http://trade.taobao.com/trade/detail/trade_item_detail.htm?bizOrderId=%s">%s</a>'%(obj.taobao_ordernum,obj.taobao_ordernum)
+    list_taobao_ordernum.allow_tags = True
+    list_taobao_ordernum.description='淘宝订单号'
+    list_taobao_ordernum.short_description='淘宝订单号'
+    list_taobao_ordernum.admin_order_field='taobao_ordernum'
+    
 
 
 
@@ -48,7 +57,7 @@ class YueCheAdmin(admin.ModelAdmin):
 
     def xue_yuan_link(self, obj):
         url = reverse('admin:yueche_dingdan_change', args=(obj.xue_yuan.id,))
-        return '<a href="%s">%s</a>' %( url ,obj.xue_yuan)
+        return u'<font class="font-weight:bold;font-size:10px"><a  target="_blank"  title="用户详细信息" href="%s">%s</a></font>&nbsp;&nbsp;<a target="_blank"  title="淘宝订单详细信息" href="http://trade.taobao.com/trade/detail/trade_item_detail.htm?bizOrderId=%s">淘宝</a>'%( url ,obj.xue_yuan.taobao_name,obj.xue_yuan.taobao_ordernum)
     xue_yuan_link.allow_tags = True
     xue_yuan_link.short_description='用户信息'
     xue_yuan_link.admin_order_field = 'xue_yuan'
