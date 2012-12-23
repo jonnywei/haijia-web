@@ -57,7 +57,7 @@ class YueCheAdmin(admin.ModelAdmin):
 
     def xue_yuan_link(self, obj):
         url = reverse('admin:yueche_dingdan_change', args=(obj.xue_yuan.id,))
-        return u'<font class="font-weight:bold;font-size:10px"><a  target="_blank"  title="用户详细信息" href="%s">%s</a></font>&nbsp;&nbsp;<a target="_blank"  title="淘宝订单详细信息" href="http://trade.taobao.com/trade/detail/trade_item_detail.htm?bizOrderId=%s">淘宝</a>'%( url ,obj.xue_yuan.taobao_name,obj.xue_yuan.taobao_ordernum)
+        return u'<a  target="_blank"  title="用户详细信息" href="%s"><strong style="color: #FF5500;font-weight:bold;font-size:15px">%s</strong></a>&nbsp;&nbsp;<a target="_blank"  title="淘宝订单详细信息" href="http://trade.taobao.com/trade/detail/trade_item_detail.htm?bizOrderId=%s">淘宝</a>'%( url ,obj.xue_yuan.taobao_name,obj.xue_yuan.taobao_ordernum)
     xue_yuan_link.allow_tags = True
     xue_yuan_link.short_description='用户信息'
     xue_yuan_link.admin_order_field = 'xue_yuan'
