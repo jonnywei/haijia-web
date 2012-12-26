@@ -57,6 +57,8 @@ def test_proxy(ip,port):
         
         json.loads(content)
 
+        print content
+        
         if get_cookie(cj, 'client_cookie')=='client_cookie' and get_cookie(cj, 'cookie_test')=='true':
 
             return True;
@@ -74,9 +76,9 @@ class Command(BaseCommand):
     help = 'check proxy is or not alive'
     def handle(self, *args, **options):
         for proxy in ProxyHost.objects.all():
-            start = time.clock()
+            start = time.time()
             is_check_ok = test_proxy(proxy.ip, proxy.port)
-            end =  time.clock()
+            end =  time.time()
             exetime = (end-start)*1000
 
             print long(exetime)
