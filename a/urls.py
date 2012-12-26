@@ -12,5 +12,7 @@ urlpatterns = patterns('a.views',
                       
     url(r'^cookie/add/$','cookie_add'),
     url(r'^config/$','config'),
+    url(r'^proxy/add/$','proxy_add'),
+    url(r'^proxy/all/$','proxy_all'),
     
 )

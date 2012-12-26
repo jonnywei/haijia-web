@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from settings.models import SystemConfig
 from settings.models import CookieImgCode
+from settings.models import ProxyHost
 
 from django.contrib import admin
 from django.utils.timezone import localtime
@@ -37,6 +38,7 @@ class CookieImgCodeAdmin(admin.ModelAdmin):
    
 admin.site.register(SystemConfig, SystemConfigAdmin)
 admin.site.register(CookieImgCode, CookieImgCodeAdmin)
+admin.site.register(ProxyHost)
 
 
 

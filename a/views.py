@@ -4,6 +4,8 @@
 from yueche.models import YueChe
 from settings.models import SystemConfig
 from settings.models import CookieImgCode
+from settings.models import ProxyHost
+
 
 from django.http import HttpResponse
 from django.utils import simplejson
@@ -102,3 +104,34 @@ def cookie_add(request):
     cc.save()
     
     return HttpResponse('ok',content_type="text/plain;charset=utf-8")
+
+#得到所有的代理列表
+def proxy_all(request):
+    
+    cc = ProxyHost.objects.all()
+    
+    json_serializer = serializers.get_serializer("json")()
+    
+    data = json_serializer.serialize(cc, ensure_ascii=False)
+
+    return HttpResponse(data,"application/json;charset=utf-8")
+
+#添加一个proxy   
+def proxy_add(request):
+    
+    rip = request.GET['ip']
+    rport  = request.GET['port']
+    
+    #rcode_type = request.GET['type']
+    
+    eobj = ProxyHost.objects.filter(ip__exact=rip, port__exact=rport)
+    if len(eobj) > 0:
+        return HttpResponse('exist',content_type="text/plain;charset=utf-8")
+    
+    cc = ProxyHost(ip=rip, port=rport)
+
+    cc.save()
+    
+    return HttpResponse('ok',content_type="text/plain;charset=utf-8")
+
+
