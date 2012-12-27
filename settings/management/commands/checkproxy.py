@@ -57,7 +57,7 @@ def test_proxy(ip,port):
         
         json.loads(content)
 
-        print content
+        #print content
         
         if get_cookie(cj, 'client_cookie')=='client_cookie' and get_cookie(cj, 'cookie_test')=='true':
 

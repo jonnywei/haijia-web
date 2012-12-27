@@ -35,10 +35,30 @@ class CookieImgCodeAdmin(admin.ModelAdmin):
            return localtime(obj.update_date).strftime('%Y-%m-%d %H:%M:%S')
     list_update_date.description='更新日期'
     list_update_date.short_description='更新日期'
-   
+
+class ProxyHostAdmin(admin.ModelAdmin):
+    list_display=('id','ip','port','list_up_time','list_speed')
+    search_fields =['ip']
+    def list_up_time(self,obj):
+        if obj.check_count == 0:
+            return 'NoTest'
+        else :
+            return obj.alive_count/obj.check_count * 100
+    list_up_time.short_description = '存活率(%)'
+    list_up_time.admin_order_field = 'alive_count'
+
+    def list_speed(self, obj):
+        if obj.alive_count == 0 and obj.check_count > 0:
+            return 0
+        if obj.alive_count == 0 and obj.check_count == 0:
+            return 'NoTest'
+        return obj.speed/obj.alive_count
+    list_speed.short_description ='速度(ms)'
+    list_speed.admin_order_field ='speed'
+    
 admin.site.register(SystemConfig, SystemConfigAdmin)
 admin.site.register(CookieImgCode, CookieImgCodeAdmin)
-admin.site.register(ProxyHost)
+admin.site.register(ProxyHost,ProxyHostAdmin)
 
 
 
