@@ -5,6 +5,7 @@ from settings.models import ProxyHost
 
 from django.contrib import admin
 from django.utils.timezone import localtime
+import math
 
 class SystemConfigAdmin (admin.ModelAdmin):
 
@@ -43,7 +44,7 @@ class ProxyHostAdmin(admin.ModelAdmin):
         if obj.check_count == 0:
             return 'NoTest'
         else :
-            return obj.alive_count/obj.check_count * 100
+            return int(math.floor(obj.alive_count/float(obj.check_count) * 100))
     list_up_time.short_description = '存活率(%)'
     list_up_time.admin_order_field = 'alive_count'
 
