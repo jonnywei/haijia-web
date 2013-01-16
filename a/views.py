@@ -12,6 +12,7 @@ from django.utils import simplejson
 from django.core import serializers
 from django.shortcuts import get_object_or_404, render_to_response
 
+import math
 import datetime
 
 
@@ -105,13 +106,24 @@ def cookie_add(request):
     
     return HttpResponse('ok',content_type="text/plain;charset=utf-8")
 
+def alive_rate(obj):
+    arate =0
+    if obj.check_count == 0:
+        arate = 0
+        return False
+    else :
+        arate = int(math.floor(obj.alive_count/float(obj.check_count) * 100))
+        if arate > 80:
+            return True
+    return False
+
 #得到所有的代理列表
 def proxy_all(request):
     
     cc = ProxyHost.objects.all()
     
     json_serializer = serializers.get_serializer("json")()
-    
+    cc = filter(alive_rate,list(cc))[:256]
     data = json_serializer.serialize(cc, ensure_ascii=False)
 
     return HttpResponse(data,"application/json;charset=utf-8")
