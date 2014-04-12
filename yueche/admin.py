@@ -48,7 +48,8 @@ class YueCheAdmin(admin.ModelAdmin):
     date_hierarchy = 'yc_date'
 
     def list_yc_date(self, obj):
-           return localtime(obj.yc_date).strftime('%Y-%m-%d')
+           return obj.yc_date.strftime('%Y-%m-%d')
+           #return obj.yc_date
    
     list_yc_date.short_description='约车日期'
     list_yc_date.admin_order_field = 'yc_date'
