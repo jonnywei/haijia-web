@@ -79,12 +79,12 @@ def image_code_get(request):
 #得到海驾的bookcode图片
 def book_code_get(requst):
    
-    book_pic_url ="http://haijia.bjxueche.net/tools/CreateCode.ashx?key=BookingCode&random="+str(random.random())
+    book_pic_url ="http://haijia.bjxueche.net/tools/CreateCode2.ashx?key=ImgCode&random="+str(random.random())
     cookie_value='bookcookie'
     try:
         data = urllib2.urlopen(book_pic_url).read()
         for cookie in cj:
-            if cookie.name == 'BookingCode':
+            if cookie.name == 'ImgCode':
                 print cookie.name, cookie.value
                 cookie_value=cookie.value
                 break
