@@ -31,6 +31,18 @@ def yueche(request):
     data = json_serializer.serialize(response_data, ensure_ascii=False)
 
     return HttpResponse(data,"application/json;charset=utf-8")
+#需要扫描约车信息
+def yueche_scan(request):
+
+    sevendaylater = datetime.date.today()+ datetime.timedelta(days=7)
+   
+    response_data = YueChe.objects.filter(yc_date__range=(datetime.date.today(), sevendaylater),yc_result=None)
+
+    json_serializer = serializers.get_serializer("json")()
+    
+    data = json_serializer.serialize(response_data, ensure_ascii=False)
+
+    return HttpResponse(data,"application/json;charset=utf-8")
 
 def detail(request,yueche_id):
 
