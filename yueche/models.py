@@ -33,8 +33,12 @@ class YueChe(models.Model):
         (u'am,pm,ni',u'全天'),
         )
     KM_CHOICES =(
+        (u'km0',u'科目自动'),
+        (u'km1',u'科目一'),
         (u'km2',u'科目二'),
-        (u'km3',u'科目三')
+        (u'km3',u'科目三'),
+        (u'ks2',u'科目二考试'),
+        (u'ks3',u'科目三考试')
         )
     CAR_TYPE_CHOICES =(
         (u'als',u'爱丽舍'),
@@ -47,10 +51,10 @@ class YueChe(models.Model):
     xue_yuan = models.ForeignKey(DingDan)
     id_num = models.CharField('身份证号',max_length=18)
     passwd = models.CharField('密码',max_length=18)
-    car_type = models.CharField('车辆类型',max_length=18,choices=CAR_TYPE_CHOICES)
+    car_type = models.CharField('车辆类型',max_length=18,choices=CAR_TYPE_CHOICES,default='byd')
     yc_date = models.DateField('约车时间')
     yc_time = models.CharField('上午下午',max_length=64,choices=AM_PM_CHOICES)
-    yc_km = models.CharField('科目几',max_length =18,choices=KM_CHOICES)
+    yc_km = models.CharField('科目考试',max_length =18,choices=KM_CHOICES,default='km2')
 
     phone_num =models.CharField('电话号码',max_length=20,null=True,blank=True)
     yc_result = models.IntegerField('约车是否成功',null=True,blank=True)
