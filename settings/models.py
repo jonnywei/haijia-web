@@ -25,6 +25,7 @@ class CookieImgCode(models.Model):
         )
     vcode = models.CharField('验证码',max_length=4)
     cookie = models.CharField('Cookie',max_length= 256)
+    asp_session_id = models.CharField('ASP.NET_SessionId',max_length= 256)
     code_type = models.CharField('类型', max_length = 64,choices=CODE_TYPE_CHOICES)
     valid = models.IntegerField('有效标志',default=1, blank=True, null=True,choices=VALID_TYPE_CHOICES)
     create_date = models.DateTimeField('创建日期',auto_now_add=True)

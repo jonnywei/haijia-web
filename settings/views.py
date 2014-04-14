@@ -43,14 +43,16 @@ def book_code(request):
 def image_code_add(request):
     vicode = request.POST['vcode']
     vcookie = request.COOKIES.get('cookieImgCode','default')
-    cimgcode = CookieImgCode(vcode=vicode, cookie=vcookie,code_type='ImgCode')
+    vasp_session_id=request.COOKIES.get('cookieAspSessionId','default')
+    cimgcode = CookieImgCode(vcode=vicode, cookie=vcookie,asp_session_id=vasp_session_id,code_type='ImgCode')
     cimgcode.save()
     return HttpResponseRedirect(reverse('settings.views.image_code'))
 
 def book_code_add(request):
     vicode = request.POST['vcode']
     vcookie = request.COOKIES.get('cookieBookingCode','default')
-    cimgcode = CookieImgCode(vcode=vicode, cookie=vcookie,code_type='BookingCode')
+    vasp_session_id=request.COOKIES.get('cookieAspSessionId','default')
+    cimgcode = CookieImgCode(vcode=vicode, cookie=vcookie,asp_session_id=vasp_session_id,code_type='BookingCode')
     cimgcode.save()
     return HttpResponseRedirect(reverse('settings.views.book_code'))
 
@@ -61,17 +63,23 @@ def image_code_get(request):
 
     login_pic_url ="http://haijia.bjxueche.net/tools/CreateCode.ashx?key=ImgCode&random="+str(random.random())
     cookie_value='imgcookie'
+    asp_session_id='asp_session_id'
     try:
         data = urllib2.urlopen(login_pic_url).read()
         for cookie in cj:
-            if cookie.name == 'ImgCode':
+            if (cookie.name == 'ImgCode'):
                 print cookie.name, cookie.value
                 cookie_value=cookie.value
-                break
+            elif cookie.name == 'ASP.NET_SessionId':
+                print cookie.name, cookie.value
+                asp_session_id=cookie.value
+            else:
+                pass
     except Exception,e:
         pass
     response  =   HttpResponse(data,"image/gif")
     response.set_cookie('cookieImgCode',cookie_value)
+    response.set_cookie('cookieAspSessionId',asp_session_id)
     return response
     #return HttpResponse(data,"image/gif")
 
@@ -81,13 +89,19 @@ def book_code_get(requst):
    
     book_pic_url ="http://haijia.bjxueche.net/tools/CreateCode2.ashx?key=ImgCode&random="+str(random.random())
     cookie_value='bookcookie'
+    asp_session_id='asp_session_id'
+
     try:
         data = urllib2.urlopen(book_pic_url).read()
         for cookie in cj:
-            if cookie.name == 'ImgCode':
+            if (cookie.name == 'ImgCode'):
                 print cookie.name, cookie.value
                 cookie_value=cookie.value
-                break
+            elif cookie.name == 'ASP.NET_SessionId':
+                print cookie.name, cookie.value
+                asp_session_id=cookie.value
+            else:
+                pass
     except Exception,e:
         print 'error occour'
             
@@ -95,6 +109,8 @@ def book_code_get(requst):
     
     response  =   HttpResponse(data,"image/gif")
     response.set_cookie('cookieBookingCode',cookie_value)
+    response.set_cookie('cookieAspSessionId',asp_session_id)
+
     return response
     #return HttpResponse(data,"image/gif")
 

@@ -24,7 +24,7 @@ class SystemConfigAdmin (admin.ModelAdmin):
 
 
 class CookieImgCodeAdmin(admin.ModelAdmin):
-    list_display = ('vcode','cookie','code_type','valid','list_create_date','list_update_date')
+    list_display = ('vcode','cookie','asp_session_id','code_type','valid','list_create_date','list_update_date')
     search_fields = ['vcode','code_type']
     
 

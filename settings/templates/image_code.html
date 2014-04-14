@@ -30,10 +30,10 @@
 
 <h2>验证码列表</h2>
 <table border='1'>
-<tr><td>验证码</td><td>cookie</td><td>类型</td><td>创建日期</td></tr>
+<tr><td>验证码</td><td>cookie</td><td>ASP.NET_SessionId</td><td>类型</td><td>创建日期</td></tr>
  {% for ck in all_cookies %}
 	<tr> 
-     <td>{{ck.vcode}}</td> <td>{{ck.cookie}}</td>
+     <td>{{ck.vcode}}</td> <td>{{ck.cookie}}</td><td>{{ck.asp_session_id}}</td>
 	<td>{{ck.code_type}}</td><td>{{ck.update_date|date:'Y-m-d H:i:s' }}</td>
 </tr>
  {%  endfor %}
