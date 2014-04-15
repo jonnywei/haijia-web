@@ -86,6 +86,20 @@ def update(request,yueche_id):
 
     
     #return HttpResponse(simplejson.dumps(list(response_data)),"application/json")
+def yueche_update(request):
+    p = get_object_or_404(YueChe, id_num=request.GET['id_num'], yc_date=request.GET['yc_date'])
+    try:
+        yc_result = p.yc_result
+    except:
+        pass
+    else:
+        if yc_result == 0 :
+            return HttpResponse("ok","text/html")
+        else:
+            p.yc_result = request.GET['yc_result']
+            p.yc_info   = request.GET['yc_info']
+            p.save()
+            return HttpResponse("save","text/html") 
         
 
 #系统配置信息读取

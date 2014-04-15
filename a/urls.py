@@ -8,6 +8,8 @@ urlpatterns = patterns('a.views',
 
     url(r'^yueche/(?P<yueche_id>\d+)/$','detail'),
     url(r'^yueche/(?P<yueche_id>\d+)/update/$','update'),
+    url(r'^yueche/update/$','yueche_update'),
+                    
     url(r'^cookie/all/$','cookie_all'),
     #url(r'^cookie/bookcode/$','cookie_bookcode'),
                       
