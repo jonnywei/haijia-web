@@ -30,11 +30,11 @@ class DingDanAdmin (admin.ModelAdmin):
 class YueCheAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ('xue_yuan', 'id_num', 'passwd','car_type','yc_date', 'yc_time','yc_km','phone_num')
+            'fields': ('xue_yuan', 'id_num', 'passwd','yc_date', 'yc_time','yc_km','phone_num','reserve')
         }),
         ('可选信息', {
             'classes': ('collapse',),
-            'fields': ('white_car','black_car','reserve')
+            'fields': ('white_car','black_car','car_type')
         }),
         ('约车结果', {
             'classes': ['wide', 'extrapretty'],
