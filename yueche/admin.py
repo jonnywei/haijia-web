@@ -42,7 +42,7 @@ class YueCheAdmin(admin.ModelAdmin):
         }),
     )
     
-    list_display = ('id','xue_yuan_link','id_num','phone_num','list_yc_date','yc_time','yc_km','yc_result','yc_info')
+    list_display = ('id','xue_yuan_link','id_num','passwd','phone_num','list_yc_date','yc_time','yc_km','yc_result','yc_info')
     
     search_fields = ['id_num','xue_yuan__taobao_ordernum','xue_yuan__taobao_name','xue_yuan__name','xue_yuan__phone_num']
     date_hierarchy = 'yc_date'
