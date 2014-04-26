@@ -58,7 +58,7 @@ class YueChe(models.Model):
 
     phone_num =models.CharField('电话号码',max_length=20,null=True,blank=True)
     yc_result = models.IntegerField('结果',null=True,blank=True)
-    yc_info = models.CharField('约结果详细',max_length=256,null=True,blank=True)
+    yc_info = models.CharField('约车结果详细',max_length=256,null=True,blank=True)
     white_car = models.CharField('喜欢的车',max_length=256,null=True,blank=True)
     black_car = models.CharField('讨厌的车',max_length=256,null=True,blank=True)
 
