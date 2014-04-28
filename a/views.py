@@ -2,6 +2,7 @@
 # Create your views here.
 
 from yueche.models import YueChe
+from yueche.models import XueYuan
 from settings.models import SystemConfig
 from settings.models import CookieImgCode
 from settings.models import ProxyHost
@@ -22,21 +23,34 @@ def index(request):
 #约车信息
 def yueche(request):
 
-    sevendaylater = datetime.date.today()+ datetime.timedelta(days=7)
-   
-    response_data = YueChe.objects.filter(yc_date__range=(sevendaylater, sevendaylater))
+    jia_xiao =request.GET.get('jx',None)
 
+    yc_date=request.GET.get('yc_date',None)
+
+    if yc_date == None:
+
+        yc_date = datetime.date.today()+ datetime.timedelta(days=7)
+    if jia_xiao == None:
+        response_data = YueChe.objects.filter(yc_date__range=(yc_date, yc_date)).prefetch_related()
+    else:
+        response_data = YueChe.objects.filter(yc_date__range=(yc_date, yc_date),xue_yuan__jia_xiao=jia_xiao).prefetch_related()
+       
     json_serializer = serializers.get_serializer("json")()
     
     data = json_serializer.serialize(response_data, ensure_ascii=False)
 
     return HttpResponse(data,"application/json;charset=utf-8")
 #需要扫描约车信息
-def yueche_scan(request):
+def yueche_scan(request,jiaxiao_name):
 
-    sevendaylater = datetime.date.today()+ datetime.timedelta(days=7)
    
-    response_data = YueChe.objects.filter(yc_date__range=(datetime.date.today(), sevendaylater),yc_result=None)
+    yc_date=request.GET.get('yc_date',None)
+
+    if yc_date == None:
+        sevendaylater = datetime.date.today()+ datetime.timedelta(days=7)
+        yc_date = sevendaylater
+        
+    response_data = YueChe.objects.filter(yc_date__range=(datetime.date.today(), yc_date),xue_yuan__jia_xiao=jiaxiao_name,yc_result=None)
 
     json_serializer = serializers.get_serializer("json")()
     
@@ -60,6 +74,15 @@ def detail(request,yueche_id):
     data = json_serializer.serialize(response_data, ensure_ascii=False)
 
     
+    return HttpResponse(data,"application/json;charset=utf-8")
+
+def xueyuan_detail(request,xueyuan_id):
+    response_data = XueYuan.objects.filter(id__exact=xueyuan_id)
+
+    json_serializer = serializers.get_serializer("json")()
+
+    data = json_serializer.serialize(response_data, ensure_ascii=False)
+
     return HttpResponse(data,"application/json;charset=utf-8")
 
 def update(request,yueche_id):
