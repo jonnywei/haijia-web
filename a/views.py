@@ -30,10 +30,19 @@ def yueche(request):
     if yc_date == None:
 
         yc_date = datetime.date.today()+ datetime.timedelta(days=7)
+
+    xue_yuan_all =XueYuan.objects.all()
+    xue_yuan_dict = dict([(obj.id, obj) for obj in xue_yuan_all])
+    
+    
     if jia_xiao == None:
-        response_data = YueChe.objects.filter(yc_date__range=(yc_date, yc_date)).prefetch_related()
+        response_data = YueChe.objects.select_related().filter(yc_date__range=(yc_date, yc_date))
+        for obj in response_data:
+            print obj.xue_yuan.id
+            obj.xue_yuan_info =xue_yuan_dict[obj.xue_yuan.id]
+            print obj.xue_yuan_info
     else:
-        response_data = YueChe.objects.filter(yc_date__range=(yc_date, yc_date),xue_yuan__jia_xiao=jia_xiao).prefetch_related()
+        response_data = YueChe.objects.prefetch_related().filter(yc_date__range=(yc_date, yc_date),xue_yuan__jia_xiao=jia_xiao)
        
     json_serializer = serializers.get_serializer("json")()
     
@@ -77,7 +86,7 @@ def detail(request,yueche_id):
     return HttpResponse(data,"application/json;charset=utf-8")
 
 def xueyuan_detail(request,xueyuan_id):
-    response_data = XueYuan.objects.filter(id__exact=xueyuan_id)
+    response_data = XueYuan.objects.select_related().filter(id__exact=xueyuan_id)
 
     json_serializer = serializers.get_serializer("json")()
 
