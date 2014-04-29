@@ -25,12 +25,14 @@ class DingDan(models.Model):
     
 class XueYuan(models.Model):
     CAR_TYPE_CHOICES =(
-        (u'als',u'爱丽舍'),
-        (u'byd',u'比亚迪'),
-        (u'stn',u'桑塔纳'),
-        (u'zdd',u'自动档'),
-        (u'fk', u'富康'),
-        (u'other',u'其他'),
+        #(u'als',u'爱丽舍'),
+        (u'hj',u'海驾默认'),
+        #(u'byd',u'比亚迪'),
+        (u'stn',u'普桑'),
+        #(u'zdd',u'自动档'),
+        #(u'fk', u'富康'),
+        (u'qr', u'奇瑞奇云'),
+        #(u'other',u'其他'),
         )
     JIA_XIAO_TYPE_CHOICES=(
         (u'haijia',u'海淀驾校'),
@@ -41,14 +43,17 @@ class XueYuan(models.Model):
     jia_xiao = models.CharField('驾校',max_length=18,choices=JIA_XIAO_TYPE_CHOICES,default='haijia')
     id_num = models.CharField('身份证号',max_length=18)
     passwd = models.CharField('密码',max_length=18)
-    car_type = models.CharField('车辆类型',max_length=18,choices=CAR_TYPE_CHOICES,default='byd')
+    car_type = models.CharField('车辆类型',max_length=18,choices=CAR_TYPE_CHOICES,default='hj')
     phone_num =models.CharField('电话号码',max_length=20,null=True,blank=True)
     name = models.CharField('姓名',max_length=20,null=True,blank=True)
     create_date = models.DateTimeField('创建日期',auto_now_add=True)
     update_date = models.DateTimeField('更新日期',auto_now=True)
     reserve = models.CharField('备注',max_length=1024,null=True,blank=True)
     def __unicode__(self):
-        return  u"%s_[学员：%s,%s,%s]" % (self.ding_dan,self.id_num,self.passwd,self.name)
+        nm = self.name
+        if self.jia_xiao == 'longquan':
+            nm = self.car_type
+        return  u"%s_[学员：%s,%s,%s]" % (self.ding_dan,self.id_num,self.passwd,nm)
 
 
 class YueChe(models.Model):

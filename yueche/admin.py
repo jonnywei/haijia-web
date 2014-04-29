@@ -43,6 +43,10 @@ class YueCheAdmin(admin.ModelAdmin):
             'fields': ('yc_result','yc_info')
         }),
     )
+
+    
+    
+    
     #'xue_yuan__id_num','xue_yuan__passwd','xue_yuan__phone_num',
     list_display = ('id','list_ding_dan_info','list_xue_yuan_link','list_xue_yuan_jia_xiao','list_xue_yuan_id_num',
                     'list_xue_yuan_passwd','list_xue_yuan__phone_num','list_yc_date','yc_time','yc_km','yc_result','yc_info')
@@ -67,8 +71,16 @@ class YueCheAdmin(admin.ModelAdmin):
     list_ding_dan_info.admin_order_field = 'xue_yuan__dian_dan__id'
 
     def list_xue_yuan_link(self, obj):
+        CAR_TYPE_CHOICES={
+            u'stn':u'普桑',
+            u'qr': u'奇瑞',
+        }
         url = reverse('admin:yueche_xueyuan_change', args=(obj.xue_yuan.id,))
-        return u'<a target="_blank"  title="学员详细信息" href="%s"><strong>%s,%s</strong></a>'%( url,obj.xue_yuan.id_num,obj.xue_yuan.name)
+        nm = obj.xue_yuan.name
+        if obj.xue_yuan.jia_xiao == 'longquan':
+            nm =CAR_TYPE_CHOICES[obj.xue_yuan.car_type]
+        return u'<a target="_blank"  title="学员详细信息" href="%s"><strong>%s,%s</strong></a>'%( url,obj.xue_yuan.id_num,
+                                                                                               nm)
     list_xue_yuan_link.allow_tags = True
     list_xue_yuan_link.short_description='学员信息'
     list_xue_yuan_link.admin_order_field = 'xue_yuan__id'
