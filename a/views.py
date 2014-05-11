@@ -55,11 +55,12 @@ def yueche_scan(request,jiaxiao_name):
    
     yc_date=request.GET.get('yc_date',None)
 
+    start_date = datetime.date.today()+ datetime.timedelta(days=1)
     if yc_date == None:
         sevendaylater = datetime.date.today()+ datetime.timedelta(days=7)
         yc_date = sevendaylater
         
-    response_data = YueChe.objects.filter(yc_date__range=(datetime.date.today(), yc_date),xue_yuan__jia_xiao=jiaxiao_name,yc_result=None)
+    response_data = YueChe.objects.filter(yc_date__range=(start_date, yc_date),xue_yuan__jia_xiao=jiaxiao_name,yc_result=None)
 
     json_serializer = serializers.get_serializer("json")()
     
