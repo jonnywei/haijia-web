@@ -64,9 +64,10 @@ class YueCheAdmin(admin.ModelAdmin):
     #xue_yuan.short_description ='订单信息'
     def list_ding_dan_info(self,obj):
         url = reverse('admin:yueche_dingdan_change', args=(obj.xue_yuan.ding_dan.id,))
+	bayer_info=obj.xue_yuan.ding_dan.taobao_name +u',次数：'+str(obj.xue_yuan.ding_dan.yc_count) +u',金额：'+str(obj.xue_yuan.ding_dan.amount)
 	utf_quote_taobao_name =quote(obj.xue_yuan.ding_dan.taobao_name.encode('utf-8'))
 	quote_taobao_name =quote(obj.xue_yuan.ding_dan.taobao_name.encode('gbk'))
-        return u'<a  target="_blank"  title="查看买家信息" href="%s"><strong style="color: #FF5500;font-weight:bold;font-size:15px">%s</strong></a><a title="只看此买家约车信息" href="?q=%s">&#376;</a>&nbsp;<a target="_blank"  href="http://trade.taobao.com/trade/itemlist/list_sold_items.htm?event_submit_do_query=1&buyerNick=%s&closeorder_flag=1&isArchive=false&isArchiveDefault=0&action=itemlist%%2FQueryAction&user_type=1&pageNum=0&order=desc&order_type=orderList&isQueryMore=false&select_shop_name=&isOwnOfficialShop=false&sellerNumID=87781119&from_flag=&auctionTitle=&bizOrderTimeBegin=&bizOrderHourBegin=00&bizOrderMinBegin=00&bizOrderTimeEnd=&bizOrderHourEnd=00&bizOrderMinEnd=00&auctionStatus=ALL&commentStatus=ALL&bizOrderId=&logisticsService=ALL&tradeDissension=ALL&auctionType=0&shopName=All">淘宝交易</a>' %( url ,obj.xue_yuan.ding_dan.taobao_name,  utf_quote_taobao_name ,quote_taobao_name) 
+        return u'<a  target="_blank"  title="%s" href="%s"><strong style="color: #FF5500;font-weight:bold;font-size:15px">%s</strong></a><a title="只看此买家约车信息" href="?q=%s">&#376;</a>&nbsp;<a target="_blank"  href="http://trade.taobao.com/trade/itemlist/list_sold_items.htm?event_submit_do_query=1&buyerNick=%s&closeorder_flag=1&isArchive=false&isArchiveDefault=0&action=itemlist%%2FQueryAction&user_type=1&pageNum=0&order=desc&order_type=orderList&isQueryMore=false&select_shop_name=&isOwnOfficialShop=false&sellerNumID=87781119&from_flag=&auctionTitle=&bizOrderTimeBegin=&bizOrderHourBegin=00&bizOrderMinBegin=00&bizOrderTimeEnd=&bizOrderHourEnd=00&bizOrderMinEnd=00&auctionStatus=ALL&commentStatus=ALL&bizOrderId=&logisticsService=ALL&tradeDissension=ALL&auctionType=0&shopName=All">淘宝交易</a>' %(bayer_info, url ,obj.xue_yuan.ding_dan.taobao_name,  utf_quote_taobao_name ,quote_taobao_name) 
     #<a target="_blank"  title="淘宝订单详细信息" href="http://trade.taobao.com/trade/detail/trade_item_detail.htm?bizOrderId=%s">淘宝</a>
     list_ding_dan_info.allow_tags = True
     list_ding_dan_info.short_description='买家(客户)信息'
@@ -85,9 +86,8 @@ class YueCheAdmin(admin.ModelAdmin):
             u'hj': u'海驾',
         }
         url = reverse('admin:yueche_xueyuan_change', args=(obj.xue_yuan.id,))
-        nm = obj.xue_yuan.name
-        if obj.xue_yuan.jia_xiao == 'longquan':
-            nm =CAR_TYPE_CHOICES[obj.xue_yuan.car_type]
+        nm = obj.xue_yuan.name + ',' +CAR_TYPE_CHOICES[obj.xue_yuan.car_type]
+        
         return u'%s<a target="_blank"  title="%s,%s" href="%s"><strong>&raquo;</strong></a>'%(obj.xue_yuan.id_num, obj.xue_yuan.id_num,nm,url) 
     list_xue_yuan_id_num.allow_tags = True   
     list_xue_yuan_id_num.short_description='学员信息'
