@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.core.validators import *
 
 # Create your models here.
 
@@ -8,11 +9,10 @@ class DingDan(models.Model):
         (u'w',u'w'),
         (u'x',u'x')
         )
-    YUE_CHE_COUNT_CHOICE=(
-        (u'w',u'w'),
-        )
+    YUE_CHE_COUNT_CHOICES= [(i,i) for i in range(1,100)]
+    #
     taobao_name = models.CharField('淘宝用户名', max_length=40)
-    yc_count = models.IntegerField('约车次数',null=True)
+    yc_count = models.IntegerField('约车次数', default=1, choices=YUE_CHE_COUNT_CHOICES,null=True, validators=[MaxValueValidator(100),MinValueValidator(1)])
     amount= models.DecimalField("实收款", max_digits=10, decimal_places=2)
     taobao_ordernum= models.CharField('淘宝订单号',max_length=64,default='',blank=True)
     wang_dian = models.CharField('网店',max_length=20,null=True,blank=True,choices=WANG_DIAN_CHOICES,default='w')
