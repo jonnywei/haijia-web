@@ -47,9 +47,9 @@ class YueCheAdmin(admin.ModelAdmin):
  
     
     #'xue_yuan__id_num','xue_yuan__passwd','xue_yuan__phone_num',
-    list_display = ('id','list_ding_dan_info','list_xue_yuan_link','list_xue_yuan_jia_xiao','list_xue_yuan_id_num',
+    list_display = ('id','list_ding_dan_info','list_xue_yuan_jia_xiao','list_xue_yuan_id_num',
                     'list_xue_yuan_passwd','list_xue_yuan__phone_num','list_yc_date','yc_time','yc_km','yc_result','yc_info')
-    #list_filter = ('xue_yuan__jia_xiao', 'xue_yuan__car_type')
+    #list_filter = ('xue_yuan__ding_dan__taobao_name', 'xue_yuan__jia_xiao')
     search_fields = ['xue_yuan__id_num','xue_yuan__name','xue_yuan__ding_dan__taobao_ordernum','xue_yuan__ding_dan__taobao_name',
                      'xue_yuan__phone_num']
     date_hierarchy = 'yc_date'
@@ -64,13 +64,21 @@ class YueCheAdmin(admin.ModelAdmin):
     #xue_yuan.short_description ='订单信息'
     def list_ding_dan_info(self,obj):
         url = reverse('admin:yueche_dingdan_change', args=(obj.xue_yuan.ding_dan.id,))
-        return u'<a  target="_blank"  title="查看买家信息" href="%s"><strong style="color: #FF5500;font-weight:bold;font-size:15px">%s</strong></a> &nbsp;&nbsp; <a target="_blank"  href="http://trade.taobao.com/trade/itemlist/list_sold_items.htm?event_submit_do_query=1&buyerNick=%s&closeorder_flag=1&isArchive=false&isArchiveDefault=0&action=itemlist%%2FQueryAction&user_type=1&pageNum=0&order=desc&order_type=orderList&isQueryMore=false&select_shop_name=&isOwnOfficialShop=false&sellerNumID=87781119&from_flag=&auctionTitle=&bizOrderTimeBegin=&bizOrderHourBegin=00&bizOrderMinBegin=00&bizOrderTimeEnd=&bizOrderHourEnd=00&bizOrderMinEnd=00&auctionStatus=ALL&commentStatus=ALL&bizOrderId=&logisticsService=ALL&tradeDissension=ALL&auctionType=0&shopName=All">淘宝交易</a>' %( url ,obj.xue_yuan.ding_dan.taobao_name, quote(obj.xue_yuan.ding_dan.taobao_name.encode('gbk') ) )
+	utf_quote_taobao_name =quote(obj.xue_yuan.ding_dan.taobao_name.encode('utf-8'))
+	quote_taobao_name =quote(obj.xue_yuan.ding_dan.taobao_name.encode('gbk'))
+        return u'<a  target="_blank"  title="查看买家信息" href="%s"><strong style="color: #FF5500;font-weight:bold;font-size:15px">%s</strong></a><a title="只看此买家约车信息" href="?q=%s">&#376;</a>&nbsp;<a target="_blank"  href="http://trade.taobao.com/trade/itemlist/list_sold_items.htm?event_submit_do_query=1&buyerNick=%s&closeorder_flag=1&isArchive=false&isArchiveDefault=0&action=itemlist%%2FQueryAction&user_type=1&pageNum=0&order=desc&order_type=orderList&isQueryMore=false&select_shop_name=&isOwnOfficialShop=false&sellerNumID=87781119&from_flag=&auctionTitle=&bizOrderTimeBegin=&bizOrderHourBegin=00&bizOrderMinBegin=00&bizOrderTimeEnd=&bizOrderHourEnd=00&bizOrderMinEnd=00&auctionStatus=ALL&commentStatus=ALL&bizOrderId=&logisticsService=ALL&tradeDissension=ALL&auctionType=0&shopName=All">淘宝交易</a>' %( url ,obj.xue_yuan.ding_dan.taobao_name,  utf_quote_taobao_name ,quote_taobao_name) 
     #<a target="_blank"  title="淘宝订单详细信息" href="http://trade.taobao.com/trade/detail/trade_item_detail.htm?bizOrderId=%s">淘宝</a>
     list_ding_dan_info.allow_tags = True
     list_ding_dan_info.short_description='买家(客户)信息'
     list_ding_dan_info.admin_order_field = 'xue_yuan__ding_dan__id'
 
     def list_xue_yuan_link(self, obj):
+       	pass
+    list_xue_yuan_link.allow_tags = True
+    list_xue_yuan_link.short_description='学员信息'
+    list_xue_yuan_link.admin_order_field = 'xue_yuan__id'
+
+    def list_xue_yuan_id_num(self, obj):
         CAR_TYPE_CHOICES={
             u'stn':u'普桑',
             u'qr': u'奇瑞',
@@ -80,15 +88,9 @@ class YueCheAdmin(admin.ModelAdmin):
         nm = obj.xue_yuan.name
         if obj.xue_yuan.jia_xiao == 'longquan':
             nm =CAR_TYPE_CHOICES[obj.xue_yuan.car_type]
-        return u'<a target="_blank"  title="学员详细信息" href="%s"><strong>%s,%s</strong></a>'%( url,obj.xue_yuan.id_num,
-                                                                                               nm)
-    list_xue_yuan_link.allow_tags = True
-    list_xue_yuan_link.short_description='学员信息'
-    list_xue_yuan_link.admin_order_field = 'xue_yuan__id'
-
-    def list_xue_yuan_id_num(self, obj):
-        return obj.xue_yuan.id_num
-    list_xue_yuan_id_num.short_description='学员账号'
+        return u'%s<a target="_blank"  title="%s,%s" href="%s"><strong>&raquo;</strong></a>'%(obj.xue_yuan.id_num, obj.xue_yuan.id_num,nm,url) 
+    list_xue_yuan_id_num.allow_tags = True   
+    list_xue_yuan_id_num.short_description='学员信息'
     list_xue_yuan_id_num.admin_order_field = 'xue_yuan__id_num'
 
     def list_xue_yuan_passwd(self, obj):
