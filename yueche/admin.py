@@ -6,7 +6,7 @@ from yueche.models import YueChe
 from django.contrib import admin
 from django.utils.timezone import localtime
 from django.core.urlresolvers import reverse
-
+from urllib import quote
 class DingDanAdmin (admin.ModelAdmin):
 
     list_display = ('id','taobao_name','name','list_taobao_ordernum','yc_count','amount','phone_num','list_create_date')
@@ -28,6 +28,7 @@ class DingDanAdmin (admin.ModelAdmin):
 class XueYuanAdmin(admin.ModelAdmin):
     list_display = ('id','ding_dan','jia_xiao','name','id_num', 'passwd','phone_num','car_type')
     search_fields =['id_num','jia_xiao','ding_dan__taobao_ordernum','ding_dan__taobao_name','ding_dan__name']
+    list_filter = ('jia_xiao', 'car_type')
 
 class YueCheAdmin(admin.ModelAdmin):
     fieldsets = ( 
@@ -43,14 +44,12 @@ class YueCheAdmin(admin.ModelAdmin):
             'fields': ('yc_result','yc_info')
         }),
     )
-
-    
-    
+ 
     
     #'xue_yuan__id_num','xue_yuan__passwd','xue_yuan__phone_num',
     list_display = ('id','list_ding_dan_info','list_xue_yuan_link','list_xue_yuan_jia_xiao','list_xue_yuan_id_num',
                     'list_xue_yuan_passwd','list_xue_yuan__phone_num','list_yc_date','yc_time','yc_km','yc_result','yc_info')
-    
+    #list_filter = ('xue_yuan__jia_xiao', 'xue_yuan__car_type')
     search_fields = ['xue_yuan__id_num','xue_yuan__name','xue_yuan__ding_dan__taobao_ordernum','xue_yuan__ding_dan__taobao_name',
                      'xue_yuan__phone_num']
     date_hierarchy = 'yc_date'
@@ -65,15 +64,17 @@ class YueCheAdmin(admin.ModelAdmin):
     #xue_yuan.short_description ='订单信息'
     def list_ding_dan_info(self,obj):
         url = reverse('admin:yueche_dingdan_change', args=(obj.xue_yuan.ding_dan.id,))
-        return u'<a  target="_blank"  title="订单详细信息" href="%s"><strong style="color: #FF5500;font-weight:bold;font-size:15px">%s</strong></a>&nbsp;&nbsp;<a target="_blank"  title="淘宝订单详细信息" href="http://trade.taobao.com/trade/detail/trade_item_detail.htm?bizOrderId=%s">淘宝</a>'%( url ,obj.xue_yuan.ding_dan.taobao_name,obj.xue_yuan.ding_dan.taobao_ordernum)
+        return u'<a  target="_blank"  title="查看买家信息" href="%s"><strong style="color: #FF5500;font-weight:bold;font-size:15px">%s</strong></a> &nbsp;&nbsp; <a target="_blank"  href="http://trade.taobao.com/trade/itemlist/list_sold_items.htm?event_submit_do_query=1&buyerNick=%s&closeorder_flag=1&isArchive=false&isArchiveDefault=0&action=itemlist%%2FQueryAction&user_type=1&pageNum=0&order=desc&order_type=orderList&isQueryMore=false&select_shop_name=&isOwnOfficialShop=false&sellerNumID=87781119&from_flag=&auctionTitle=&bizOrderTimeBegin=&bizOrderHourBegin=00&bizOrderMinBegin=00&bizOrderTimeEnd=&bizOrderHourEnd=00&bizOrderMinEnd=00&auctionStatus=ALL&commentStatus=ALL&bizOrderId=&logisticsService=ALL&tradeDissension=ALL&auctionType=0&shopName=All">淘宝交易</a>' %( url ,obj.xue_yuan.ding_dan.taobao_name, quote(obj.xue_yuan.ding_dan.taobao_name.encode('gbk') ) )
+    #<a target="_blank"  title="淘宝订单详细信息" href="http://trade.taobao.com/trade/detail/trade_item_detail.htm?bizOrderId=%s">淘宝</a>
     list_ding_dan_info.allow_tags = True
-    list_ding_dan_info.short_description='订单信息'
-    list_ding_dan_info.admin_order_field = 'xue_yuan__dian_dan__id'
+    list_ding_dan_info.short_description='买家(客户)信息'
+    list_ding_dan_info.admin_order_field = 'xue_yuan__ding_dan__id'
 
     def list_xue_yuan_link(self, obj):
         CAR_TYPE_CHOICES={
             u'stn':u'普桑',
             u'qr': u'奇瑞',
+            u'hj': u'海驾',
         }
         url = reverse('admin:yueche_xueyuan_change', args=(obj.xue_yuan.id,))
         nm = obj.xue_yuan.name
